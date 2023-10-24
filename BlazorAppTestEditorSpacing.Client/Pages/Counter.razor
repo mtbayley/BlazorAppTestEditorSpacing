@@ -41,7 +41,7 @@
                  <DataGridColumn Field="@nameof(ErpSecurityRow.SystemFlag)" Caption="SystemFlag" />
              </DataGridColumns>
          </DataGrid>
-        </Div>
+     </Div>
      <Div Flex="Flex.Column">
          @if (SelectedSecurityRow is not null)
         {
@@ -59,8 +59,8 @@
             <Tabs @bind-SelectedTab="mSelectedAccessTab">
                 <Items>
                     <Tab Name="allow">Allow Access (@SelectedSecurityRow!.AllowList.Count)</Tab>
-                    <Tab Name="disallow">Disallow Access (@SelectedSecurityRow!.DisallowList.Count)</Tab>
-                 </Items>
+                        <Tab Name="disallow">Disallow Access (@SelectedSecurityRow!.DisallowList.Count)</Tab>
+                    </Items>
                     <Content>
                         <TabPanel Name="allow">
                             <Div Flex="Flex.Column">
