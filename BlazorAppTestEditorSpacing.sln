@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34212.112
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAppTestEditorSpacing", "BlazorAppTestEditorSpacing\BlazorAppTestEditorSpacing.csproj", "{29C20BA9-CCEF-482A-B625-C20C7739F5F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAppTestEditorSpacing.Client", "BlazorAppTestEditorSpacing.Client\BlazorAppTestEditorSpacing.Client.csproj", "{CD4B650B-A1DD-4418-B27D-BE67564AC91A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29C20BA9-CCEF-482A-B625-C20C7739F5F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29C20BA9-CCEF-482A-B625-C20C7739F5F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29C20BA9-CCEF-482A-B625-C20C7739F5F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29C20BA9-CCEF-482A-B625-C20C7739F5F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD4B650B-A1DD-4418-B27D-BE67564AC91A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD4B650B-A1DD-4418-B27D-BE67564AC91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD4B650B-A1DD-4418-B27D-BE67564AC91A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD4B650B-A1DD-4418-B27D-BE67564AC91A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B1F82190-9DF2-4A3D-AF91-528B11560AC9}
+	EndGlobalSection
+EndGlobal

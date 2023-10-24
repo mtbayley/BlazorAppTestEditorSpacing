@@ -1,0 +1,114 @@
+﻿@page "/counter"
+@attribute [RenderModeInteractiveAuto]
+
+<PageTitle>Counter</PageTitle>
+
+<Buttons>
+    <Button Color="Color.Warning" Clicked="ClearAsync">
+        <Icon Name="IconName.Clear" /> Clear
+    </Button>
+    <Button Color="Color.Success">
+        <Icon Name="IconName.Save" /> Save
+    </Button>
+</Buttons>
+<Grid Columns="GridColumns.Are3">
+    <Div Flex="Flex.Column">
+        <TextEdit Immediate="true" Debounce="true" Text="@mMenuFilter" TextChanged="OnMenuFilterChanged" Placeholder="Filter" Margin="Margin.Is2.FromBottom" />
+        <TreeView @ref="mMenuTreeView" TNode="TreeItem<ErpMenuItem>" Nodes="MenuList"
+                  GetChildNodes="@(o => o.Children)"
+                  HasChildNodes="@(o => o.Children?.Any() == true)"
+                  SelectedNode="@SelectedMenuItem"
+                  SelectedNodeChanged="@OnMenuItemChanged"
+                  @bind-ExpandedNodes="@mMenuItemsExpanded">
+            <NodeContent>
+                <Tooltip Text="@(mMenuFilter.IsNullOrWhiteSpace() == false ? context?.Item.MenuPath : null)" Display="Display.InlineBlock" Placement="TooltipPlacement.Right">
+                    <Icon Name="@(context?.Item.IconName)" TextColor="@(context?.Item.IconColor)" />
+                    @context?.Item.MenuDesc
+                </Tooltip>
+            </NodeContent>
+        </TreeView>
+    </Div>
+    <Div Flex="Flex.Column">
+        <TextEdit Immediate="true" Debounce="true" Text="@mSecurityFilter" TextChanged="OnSecurityFilterChanged" Placeholder="Filter" Margin="Margin.Is2.FromBottom" />
+        <DataGrid @ref="mSecurityDataGrid" TItem="ErpSecurityRow" Data="SecurityList" @bind-SelectedRow="SelectedSecurityRow" Hoverable Responsive FixedHeader FixedHeaderDataGridHeight="80vh" FixedHeaderDataGridMaxHeight="80vh"
+                  Filterable FilterMode="DataGridFilterMode.Menu" FilterMethod="DataGridFilterMethod.Contains" Narrow Navigable
+                   CustomFilter="@OnCustomSecurityFilter" Resizable ResizeMode="TableResizeMode.Header"
+                  Virtualize VirtualizeOptions="@(new() { DataGridHeight = "80vh", DataGridMaxHeight = "80vh", OverscanCount = 50})">
+             <DataGridColumns>
+                 <DataGridColumn Field="@nameof(ErpSecurityRow.ParentSecCode)" Caption="Type" />
+                 <DataGridColumn Field="@nameof(ErpSecurityRow.SecCode)" Caption="Security Code" />
+                 <DataGridColumn Field="@nameof(ErpSecurityRow.Description)" Caption="Description" />
+                 <DataGridColumn Field="@nameof(ErpSecurityRow.SystemFlag)" Caption="SystemFlag" />
+             </DataGridColumns>
+         </DataGrid>
+        </Div>
+     <Div Flex="Flex.Column">
+         @if (SelectedSecurityRow is not null)
+        {
+            <Check TValue="bool" @bind-Checked="@SelectedSecurityRow!.SecurityMgr" Margin="Margin.Is2.FromBottom">Security Manager Only</Check>
+            <Autocomplete @ref="mAddAutocomplete" TItem="KeyValuePair<string, string>" TValue="string"
+                          Immediate="true"
+                          Debounce="true"
+                          MinLength="0"
+                          Data="UsersAndGroups"
+                          TextField="o=>o.Value"
+                          ValueField="o=>o.Key"
+                          Placeholder="Search for Group/User..."
+                          SelectedValueChanged="AddToAccess"
+                          Filter="AutocompleteFilter.Contains" />
+            <Tabs @bind-SelectedTab="mSelectedAccessTab">
+                <Items>
+                    <Tab Name="allow">Allow Access (@SelectedSecurityRow!.AllowList.Count)</Tab>
+                    <Tab Name="disallow">Disallow Access (@SelectedSecurityRow!.DisallowList.Count)</Tab>
+                 </Items>
+                    <Content>
+                        <TabPanel Name="allow">
+                            <Div Flex="Flex.Column">
+                                <Check TValue="bool" Checked="@(SelectedSecurityRow!.AllowAccessToAll)" CheckedChanged="AllowAllChanged" Margin="Margin.Is2.OnY">Allow Access to All Groups/Users</Check>
+                                @if (SelectedSecurityRow!.AllowAccessToAll == false)
+                            {
+                                <ListView TItem="string" Data="SelectedSecurityRow!.AllowList" TextField="o => o" ValueField="o => o" MaxHeight="100%">
+                                    <ItemTemplate>
+                                        <Div Flex="Flex.JustifyContent.Between.AlignItems.Center">
+                                            <Text>@UsersAndGroups[context.Item]</Text>
+                                                <Button Color="Color.Danger" Clicked="() => SelectedSecurityRow!.AllowList.Remove(context.Item)">
+                                                    <Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Trash" />
+                                                </Button>
+                                            </Div>
+                                        </ItemTemplate>
+                                    </ListView>
+                            }
+                        </Div>
+                    </TabPanel>
+                    <TabPanel Name="disallow">
+                        <Div Flex="Flex.Column">
+                            <Check TValue="bool" Checked="@(SelectedSecurityRow!.DisallowAccessToAll)" CheckedChanged="DisallowAllChanged" Margin="Margin.Is2.OnY">Disallow Access to All Groups/Users</Check>
+                            @if (SelectedSecurityRow!.DisallowAccessToAll == false)
+                            {
+                                <ListView TItem="string" Data="SelectedSecurityRow!.DisallowList" TextField="o => o" ValueField="o => o" MaxHeight="100%">
+                                    <ItemTemplate>
+                                        <Div Flex="Flex.JustifyContent.Between.AlignItems.Center">
+                                            <Text>@UsersAndGroups[context.Item]</Text>
+                                                <Button Color="Color.Danger" Clicked="() => SelectedSecurityRow!.DisallowList.Remove(context.Item)">
+                                                    <Icon Name="Blazorise.Icons.FontAwesome.FontAwesomeIcons.Trash" />
+                                                </Button>
+                                            </Div>
+                                        </ItemTemplate>
+                                    </ListView>
+                            }
+                        </Div>
+                    </TabPanel>
+                </Content>
+            </Tabs>
+        }
+    </Div>
+</Grid>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
